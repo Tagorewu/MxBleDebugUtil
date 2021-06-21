@@ -3,20 +3,29 @@ var Bletool = require("../../utils/bletool.js");
 var util = require("../../utils/util.js");
 const app = getApp();
 var bleUtil;
+function inArray(arr, key, val) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][key] === val) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    getDevList: {},      //已扫描到设备列表 
+    getDevList: {},      //已扫描到设备列表
     deviceslist: [
-     
+
     ],   //蓝牙数据
     devicename: 0,
     repdata: "",
     hint: "",
-    selmac:'' 
+    selmac:''
   },
 
   /**
@@ -27,7 +36,7 @@ Page({
     that.data.getDevList = {};
     app.globalData.issel = false;
     if (app.globalData.bleUtil == ""){
-      bleUtil = new Bletool(); 
+      bleUtil = new Bletool();
       app.globalData.bleUtil = bleUtil;
       bleUtil.initble(function (res) {
         console.log(res);
@@ -38,21 +47,26 @@ Page({
             bleUtil.startScanle(function (res) {
               //获取设备回调
               console.log(res);
-              if (!that.data.getDevList[res.devices[0].deviceId]) {
-                var devices = that.data.deviceslist;
-                devices.push(res.devices[0]);
-                that.data.getDevList[res.devices[0].deviceId] = devices.length;
-                that.setData({
-                  deviceslist: devices
-                });
-              } else {
-                var devices = that.data.deviceslist;
-                var index = that.data.getDevList[res.devices[0].deviceId] - 1;
-                devices[index].RSSI = res.devices[0].RSSI;
-                that.setData({
-                  deviceslist: devices
-                });
-              }
+              var devices = that.data.deviceslist;
+              res.devices.forEach(device => {
+                if (!device.name && !device.localName) {
+                  return
+                }
+                const idx = inArray(devices, 'deviceId', device.deviceId)
+                if (idx === -1) {
+                  devices.push(device)
+                  that.data.getDevList[device.deviceId] = devices.length;
+                } else {
+                  devices[idx] = device
+                }
+              })
+
+              devices.sort((a, b) => {
+                return b.RSSI - a.RSSI
+              })
+              that.setData({
+                deviceslist: devices
+              });
             }, function (res) {
               if (res.msg == "扫描结束") {
                 //扫描结束
@@ -71,7 +85,7 @@ Page({
             success:function(Res){
               wx.navigateBack({
                 complete: (res) => {
-                  
+
                 },
               })
             }
@@ -89,7 +103,7 @@ Page({
       app.globalData.bleUtil.disconnect(function (res) {
          console.log(res);
       });
-    } 
+    }
   },
 
   /**
@@ -148,7 +162,7 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },  
+  },
   selItem: function (res) {
     var that = this;
     var item = res.currentTarget.dataset.item;
@@ -171,21 +185,26 @@ Page({
       bleUtil.startScanle(function (res) {
         //获取设备回调
         console.log(res);
-        if (!that.data.getDevList[res.devices[0].deviceId]) {
-          var devices = that.data.deviceslist;
-          devices.push(res.devices[0]);
-          that.data.getDevList[res.devices[0].deviceId] = devices.length;
-          that.setData({
-            deviceslist: devices
-          });
-        } else {
-          var devices = that.data.deviceslist;
-          var index = that.data.getDevList[res.devices[0].deviceId] - 1;
-          devices[index].RSSI = res.devices[0].RSSI;
-          that.setData({
-            deviceslist: devices
-          });
-        }
+        var devices = that.data.deviceslist;
+        res.devices.forEach(device => {
+          if (!device.name && !device.localName) {
+            return
+          }
+          const idx = inArray(devices, 'deviceId', device.deviceId)
+          if (idx === -1) {
+            devices.push(device)
+            that.data.getDevList[device.deviceId] = devices.length;
+          } else {
+            devices[idx] = device
+          }
+        })
+
+        devices.sort((a, b) => {
+          return b.RSSI - a.RSSI
+        })
+        that.setData({
+          deviceslist: devices
+        });
       }, function (res) {
         if (res.return_code == 1) {
           showHintModal("正在扫描中，请勿重复操作");
