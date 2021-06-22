@@ -5,42 +5,46 @@ Page({
    * 页面的初始数据
    */
   data: {
-    menu:[
-      {
-        img:"/images/ic_ble.png",
-        name:"蓝牙调试",
-        url:"../selble/selble"
+    menu: [{
+        img: "/images/ic_ble.png",
+        name: "蓝牙调试",
+        url: "../selble/selble"
       },
+      // {
+      //   img:"/images/ic_number.png",
+      //   name:"数字转换",
+      //   url:"../numberturn/numberturn"
+      // },
+      // {
+      //   img:"/images/ic_time.png",
+      //   name:"时间戳转换",
+      //   url:"../timeturn/timeturn"
+      // },
+      // {
+      //   img:"/images/ic_code.png",
+      //   name:"进制转换",
+      //   url:"../codeturn/codeturn"
+      // },
+      // {
+      //   img:"/images/ic_lock.png",
+      //   name:"MD5加密",
+      //   url:"../MD5/MD5"
+      // },
+      // {
+      //   img:"/images/id_edit.png",
+      //   name:"意见反馈",
+      //   url:"../advice/advice"
+      // },
+      // {
+      //   img:"/images/ic_aboutus.png",
+      //   name:"关于我们",
+      //   url:"../aboutus/aboutus"
+      // }
       {
-        img:"/images/ic_number.png",
-        name:"数字转换",
-        url:"../numberturn/numberturn"
+        img: "/images/ic_lock.png",
+        name: "crc16",
+        url: "../crc16/crc16"
       },
-      {
-        img:"/images/ic_time.png",
-        name:"时间戳转换",
-        url:"../timeturn/timeturn"
-      },
-      {
-        img:"/images/ic_code.png",
-        name:"进制转换",
-        url:"../codeturn/codeturn"
-      },
-      {
-        img:"/images/ic_lock.png",
-        name:"MD5加密",
-        url:"../MD5/MD5"
-      },
-      {
-        img:"/images/id_edit.png",
-        name:"意见反馈",
-        url:"../advice/advice"
-      },
-      {
-        img:"/images/ic_aboutus.png",
-        name:"关于我们",
-        url:"../aboutus/aboutus"
-      }
     ]
   },
 
@@ -99,13 +103,13 @@ Page({
   onShareAppMessage: function () {
 
   },
-  doOpenMenu:function(res){
+  doOpenMenu: function (res) {
     var item = res.currentTarget.dataset.item;
-    if(!item.url){
+    if (!item.url) {
       wx.showModal({
-         showCancel:false,
-         content:"开发中",
-         confirmText:"我知道了"
+        showCancel: false,
+        content: "开发中",
+        confirmText: "我知道了"
       })
       return;
     }
