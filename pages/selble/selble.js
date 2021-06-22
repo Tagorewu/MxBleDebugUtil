@@ -39,8 +39,9 @@ Page({
       bleUtil = new Bletool();
       app.globalData.bleUtil = bleUtil;
       bleUtil.initble(function (res) {
-        console.log(res);
+        //console.log(res);
         if (res.return_code == "0") {
+
           setTimeout(function (res) {
             //开始蓝牙扫描 10秒后停止扫描
             wx.showNavigationBarLoading();
@@ -74,6 +75,7 @@ Page({
               }
             }, 10000, true);
           }, 1000);
+
         } else {
           bleUtil = undefined;
           app.globalData.bleUtil  = "";
@@ -182,6 +184,7 @@ Page({
     var that = this;
     if (bleUtil) {
       wx.showNavigationBarLoading();
+
       bleUtil.startScanle(function (res) {
         //获取设备回调
         console.log(res);
@@ -214,6 +217,7 @@ Page({
           wx.hideNavigationBarLoading()
         }
       }, 10000, true);
+
     } else {
       showHintModal("蓝牙未打开，请打开蓝牙后，重新打开该页面");
     }

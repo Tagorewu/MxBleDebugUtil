@@ -1,12 +1,9 @@
-/**
- * 蓝牙集成 插件
- * 2020-06-10  灵  
- * 梦辛工作室
- * v1.0.3
- */
 
 var Until = {
   getBleService() {
+    wx.showLoading({
+      title: '服务加载中...',
+    })
     wx.getBLEDeviceServices({
       deviceId: data.connectedDeviceId,
       success: function (res) {
@@ -14,6 +11,7 @@ var Until = {
           console.log("service:" + res.services[i].uuid);
           getChar(res.services[i]);
         }
+        wx.hideLoading()
       }
     })
   },
@@ -73,6 +71,10 @@ function strToHexCharCode(str) {
   return hexCharCode.join("");
 }
 
+function buf2hexStr(buffer) { // buffer is an ArrayBuffer
+  return [...new Uint8Array(buffer)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
 function readNotify(re) {
   if (!data.readServicweId && !data.readCharacteristicsId) {
     re({
@@ -88,7 +90,7 @@ function readNotify(re) {
     let str = hex2str(msg);
     res.value.strHexData = msg;
     res.value.strData = str;
-    re(res); //接受消息  
+    re(res); //接受消息
   })
   wx.readBLECharacteristicValue({
     deviceId: data.connectedDeviceId,
@@ -108,7 +110,7 @@ function opennotify(re) {
     });
     return;
   }
-  //开启通知 
+  //开启通知
   wx.notifyBLECharacteristicValueChange({
     state: true,
     deviceId: data.connectedDeviceId,
@@ -123,7 +125,7 @@ function opennotify(re) {
         res.value.strHexData = msg;
         res.value.strData = str;
         console.log(res);
-        re(res); //接受消息  
+        re(res); //接受消息
       })
     }
   })
@@ -155,7 +157,7 @@ function getChar(services) {
         if (charc.properties.read && charc.uuid.indexOf(data.readCharacteristicsId) >= 0) {
           read_id = charc.uuid;
           console.log("read_id:" + read_id);
-        }  
+        }
 
         console.log("charc_uuid:" + charc.uuid);
         services.characteristics.push(charc);
@@ -166,15 +168,15 @@ function getChar(services) {
 
       // if (notify_id != null ) {
       //   data.notifyServicweId = services.uuid;
-      //   data.notifyCharacteristicsId = notify_id;  
+      //   data.notifyCharacteristicsId = notify_id;
       // }
       // if(write_id != null){
       //   data.writeServicweId = services.uuid;
-      //   data.writeCharacteristicsId = write_id;  
-      // } 
-      // if(read_id != null){ 
+      //   data.writeCharacteristicsId = write_id;
+      // }
+      // if(read_id != null){
       //   data.readServicweId = services.uuid;
-      //   data.readCharacteristicsId = read_id; 
+      //   data.readCharacteristicsId = read_id;
       // }
     }
   })
@@ -184,7 +186,7 @@ function getChar(services) {
 class bletool {
   /**
    * 构造函数
-   * 
+   *
    * @param {Object} options 接口参数,key 为必选参数
    */
   constructor() {}
@@ -210,7 +212,7 @@ class bletool {
     if(callback){
       data.onNotifyChange = callback;
     }
-    readNotify(data.onNotifyChange); 
+    readNotify(data.onNotifyChange);
   }
 
   isCanRead(){
@@ -263,7 +265,7 @@ class bletool {
    * @parameter recb  初始化成功与否回调
    */
   initble(recb, chcb, concb) {
-    //打开适配器 判断是否支持蓝牙 
+    //打开适配器 判断是否支持蓝牙
     var info = {
       return_code: "1",
       msg: ""
@@ -327,7 +329,7 @@ class bletool {
   /**
    * 开始扫描
    *@parameter getDevCb - 发现设备回调   endTime 扫描结束时间
-   *@return info{return_code:"0",msg:"",rep:{}} 
+   *@return info{return_code:"0",msg:"",rep:{}}
    *return_code 返回操作结果  msg - 返回操作信息 rep - 扫描到的蓝牙设备信息 infoFB- 返回操作信息  isduplica - 是否搜索重复设备
    */
   startScanle(getDevCb, infoFB, endTime, isduplica) {
@@ -374,7 +376,7 @@ class bletool {
             infoFB(info);
           },
           fail: function (res) {
-            
+
           }
         })
       }, endTime);
@@ -427,7 +429,7 @@ class bletool {
           })
           info.return_code = "0";
           info.msg = "连接设备成功";
-          //获取服务 
+          //获取服务
           if (typeof readCb == "function") {
             data.onNotifyChange = readCb;
             Until.getBleService(readCb);
@@ -476,6 +478,7 @@ class bletool {
     } else {
       hexs = strToHexCharCode(msg);
     }
+
     var typedArray = new Uint8Array(hexs.match(/[\da-f]{2}/gi).map(function (h) {
       return parseInt(h, 16);
     }));
@@ -488,6 +491,7 @@ class bletool {
       });
       return;
     }
+    console.log("send: " + buf2hexStr(buffer));
     wx.writeBLECharacteristicValue({
       deviceId: data.connectedDeviceId,
       serviceId: data.writeServicweId,
