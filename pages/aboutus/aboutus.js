@@ -7,7 +7,7 @@ Page({
   data: {
     version: {
       code: "1.0.2",
-      name: "梦辛工作室"
+      name: "Studio"
     }
   },
 

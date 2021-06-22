@@ -10,12 +10,13 @@
     "pages/timeturn/timeturn",
     "pages/codeturn/codeturn",
     "pages/MD5/MD5",
-    "pages/addsendbtn/addsendbtn"
+    "pages/addsendbtn/addsendbtn",
+    "pages/crc16/crc16"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "小梦调试助手",
+    "navigationBarTitleText": "调试助手",
     "navigationBarTextStyle": "black"
   },
   "style": "v2",

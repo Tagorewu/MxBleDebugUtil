@@ -1,5 +1,5 @@
-var rootDocment = 'https://ware.mxspace.club/waresys';
-var rootDocmentRoot = 'https://ware.mxspace.club/waresys';
+var rootDocment = '';
+var rootDocmentRoot = '';
 
 const formatTime = date => {
   const year = date.getFullYear()
