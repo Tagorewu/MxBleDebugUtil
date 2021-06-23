@@ -10,7 +10,7 @@ var isSend = false;
  */
 function sendBleMsg(data, that) {
   data = data.concat(crc16util.CRC.ToCRC16(data))
-  that.appendLogs("发送数据 " + data + " 中", that);
+  that.appendLogs("Send: " + data, that);
   return new Promise((success, fail) => {
     var isSuccess = false;
     app.globalData.bleUtil.sendMsg(data, function (res) {
@@ -19,7 +19,7 @@ function sendBleMsg(data, that) {
         that.appendLogs("发送数据 " + data + " 成功", that);
         success(true);
       } else {
-        that.appendLogs("发送数据 " + data + " 失败", that);
+        //that.appendLogs("发送数据 " + data + " 失败", that);
         success(false);
       }
     }, true);

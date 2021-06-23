@@ -47,7 +47,7 @@ Page({
             wx.showNavigationBarLoading();
             bleUtil.startScanle(function (res) {
               //获取设备回调
-              console.log(res);
+              //console.log(res);
               var devices = that.data.deviceslist;
               res.devices.forEach(device => {
                 if (!device.name && !device.localName) {

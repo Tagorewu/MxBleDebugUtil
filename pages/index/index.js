@@ -102,8 +102,8 @@ Page({
         }
       }, function (res) {
         //接收到数据回调 
-        console.log("接受到消息：" + res.value.strHexData);
-        appendLogs("接受到消息 " + res.value.strHexData, that);
+        console.log("Recv: " + res.value.strHexData);
+        appendLogs("Recv: " + res.value.strHexData, that);
       });
     }
     getMenuList(this);
@@ -318,6 +318,7 @@ Page({
   doShowMenu: function (res) {
     var item = res.currentTarget.dataset.item;
     var index = res.currentTarget.dataset.index;
+    var that = this
     wx.showActionSheet({
       itemList: ["编辑", "删除"],
       success: function (res) {
