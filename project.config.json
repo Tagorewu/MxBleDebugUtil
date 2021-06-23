@@ -41,7 +41,7 @@
   "compileType": "miniprogram",
   "libVersion": "2.12.3",
   "appid": "wxb515c8a5868160b6",
-  "projectname": "smartBleConnect",
+  "projectname": "BLEDebugTool",
   "debugOptions": {
     "hidedInDevtools": []
   },

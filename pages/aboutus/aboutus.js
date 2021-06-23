@@ -6,7 +6,7 @@ Page({
    */
   data: {
     version: {
-      code: "1.0.2",
+      code: "0.0.9",
       name: "Studio"
     }
   },

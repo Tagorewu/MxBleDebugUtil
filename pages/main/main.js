@@ -35,15 +35,15 @@ Page({
       //   name:"意见反馈",
       //   url:"../advice/advice"
       // },
-      // {
-      //   img:"/images/ic_aboutus.png",
-      //   name:"关于我们",
-      //   url:"../aboutus/aboutus"
-      // }
       {
         img: "/images/ic_lock.png",
         name: "crc16",
         url: "../crc16/crc16"
+      },
+      {
+         img:"/images/ic_aboutus.png",
+         name:"关于",
+         url:"../aboutus/aboutus"
       },
     ]
   },
